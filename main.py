@@ -58,6 +58,19 @@ class Actor:
         self.pos = (self.x, self.y)
         self.draw(screen)
 
+    '''
+    def colliderent(self, other):
+        if self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y:
+            return True
+        else:
+            return False
+        
+    def collidepoint(self, pos):
+        if self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height:
+            return True
+        else:
+            return False
+    '''
 
 class Entity:
     def __init__(self, x, y, width, height, color):
