@@ -99,16 +99,10 @@ class Entity:
         self.draw(screen)
 
     def colliderent(self, other):
-        if self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y:
-            return True
-        else:
-            return False
+        return bool(self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y)
         
     def collidepoint(self, pos):
-        if self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height:
-            return True
-        else:
-            return False
+        return bool(self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height)
     
     
 
