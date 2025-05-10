@@ -2,7 +2,7 @@ import pygame
 import sys
 from math import sin, cos, pi, atan2
 pygame.init()
-healht = 100
+health = 100
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Hello World!")
 MOUSE_POS = (0, 0)
@@ -141,10 +141,10 @@ while running:
         '''
     if player.colliderent(enemy):
         #show_text("Player collided with enemy", 400, 300, (255, 0, 0), 30)
-        healht -= 10
+        health -= 10
         play_music("music/Pop.wav")
         enemy.go_to(25, 25)
-        if healht <= 0:
+        if health <= 0:
             running = False
     enemy_rotate = get_facing(enemy.x, enemy.y, player.x, player.y)
     enemy.move_facing(enemy_rotate, entity_speed)
@@ -169,14 +169,14 @@ while running:
     if keys[pygame.K_RIGHT]:
         if player.x < 750:
             player.move_facing(0, entity_speed*1.5)
-    if enemy.y > 0:
+    '''if enemy.y > 0:
         enemy.move_facing(deg_to_rad(90), entity_speed)
     if enemy.y < 550:
         enemy.move_facing(deg_to_rad(270), entity_speed)
     if enemy.x > 0:
         enemy.move_facing(deg_to_rad(180), entity_speed)
     if enemy.x < 750:
-        enemy.move_facing(0, entity_speed)
+        enemy.move_facing(0, entity_speed)'''
     screen.fill((255, 255, 255))
     player.refresh()
     enemy.refresh()
