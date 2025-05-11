@@ -195,7 +195,7 @@ except Exception as e:
     def exits():
         root.destroy()
 
-    label = tk.Label(root, text=str(e))
+    label = tk.Label(root, text="\n    Error"+str(e)+"    "+"\n")
     label.pack()
     button = tk.Button(root, text="Exit", command=exits)
     button.pack()
