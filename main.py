@@ -4,7 +4,6 @@ try:
     from math import sin, cos, pi, atan2
     import os
     print(os.getcwd())
-    input("Press Enter to continue...")
     pygame.init()
     health = 100
     screen = pygame.display.set_mode((800, 600))
