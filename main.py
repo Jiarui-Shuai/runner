@@ -190,5 +190,13 @@ try:
     pygame.quit()
     sys.exit()
 except Exception as e:
-    print(e)
-    input("Press Enter to continue...")
+    import tkinter as tk
+    root = tk.Tk()
+    def exits():
+        root.destroy()
+
+    label = tk.Label(root, text=str(e))
+    label.pack()
+    button = tk.Button(root, text="Exit", command=exits)
+    button.pack()
+    root.mainloop()
