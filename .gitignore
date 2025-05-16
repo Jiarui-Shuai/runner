@@ -1,4 +1,3 @@
 .vscode/
-*.exe
-*.bat
-*.log
+temp/
+upload.bat
