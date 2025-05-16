@@ -2,6 +2,7 @@ try:
     import pygame
     import sys
     from math import sin, cos, pi, atan2
+    from time import time as tm
     import os
     print(os.getcwd())
     pygame.init()
@@ -9,6 +10,7 @@ try:
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Hello World!")
     MOUSE_POS = (0, 0)
+    schedules_list = []
     def show_text(text, x, y, color, size):
         font = pygame.font.Font(None, size)
         text_surface = font.render(text, True, color)
@@ -34,6 +36,21 @@ try:
         pygame.mixer.music.load(music_file)
         pygame.mixer.music.play(1)
 
+    def stop_music():
+        pygame.mixer.music.stop()
+
+    def schedule(time:float, func):
+        global schedules_list
+        schedules_list.append((time,time, func))
+
+    def public_refresh():
+        global schedules_list
+        pygame.display.flip()
+        for schedulel in schedules_list:
+            if schedulel[0] <= tm()+schedulel[1]:
+                schedulel[2]()
+                schedules_list.remove(schedulel)
+            
     class Actor:
         def __init__(self, image, x, y):
             self.image = image
@@ -110,7 +127,7 @@ try:
             return bool(self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height)
         
         
-
+    schedule(1.0, func=lambda: play_music("music/Pop.wav"))
     player = Entity(400, 300, 50, 50, (0, 255, 0))
     helper = Entity(25, 25, 50, 50, (0, 0, 255))
     enemy = Entity(25, 25, 50, 50, (255, 0, 0))
@@ -180,11 +197,11 @@ try:
             enemy.move_facing(deg_to_rad(180), entity_speed)
         if enemy.x < 750:
             enemy.move_facing(0, entity_speed)'''
-        screen.fill((255, 255, 255))
+        screen.fill((255,255,255))
         player.refresh()
         enemy.refresh()
         helper.refresh()
-        pygame.display.flip()
+        public_refresh()
         clock.tick(60)
     pygame.quit()
     sys.exit()
