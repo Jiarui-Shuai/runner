@@ -1,2 +1,2 @@
-$PYPATH = Read-Host "请输入Python路径" 
+$PYPATH = Read-Host "Please enter the path of Python installation" 
 & $PYPATH\pythonw main.py
