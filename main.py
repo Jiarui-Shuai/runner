@@ -4,6 +4,7 @@ try:
     from math import sin, cos, pi, atan2
     from time import time as tm
     import os
+    from PIL import Image
     print(os.getcwd())
     pygame.init()
     health = 100
@@ -50,6 +51,12 @@ try:
             if schedulel[0] <= tm()+schedulel[1]:
                 schedulel[2]()
                 schedules_list.remove(schedulel)
+
+    def get_size(image: str):
+        with Image.open(image) as img:
+            WIDTH, HEIGHT = img.size
+        return WIDTH, HEIGHT
+
             
     class Actor:
         def __init__(self, image, x, y):
@@ -57,6 +64,8 @@ try:
             self.x = x
             self.y = y
             self.pos = (self.x, self.y)
+            self.width, self.height = get_size(image)
+            self.image = pygame.image.load(image).convert_alpha()
         
         def draw(self, screen):
             screen.blit(self.image, self.pos)
@@ -74,11 +83,10 @@ try:
             self.x = x
             self.y = y
 
-        def refresh(self):
+        def refresh(self, _screen):
             self.pos = (self.x, self.y)
-            self.draw(screen)
+            self.draw(_screen)
 
-        '''
         def colliderent(self, other):
             if self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y:
                 return True
@@ -90,7 +98,6 @@ try:
                 return True
             else:
                 return False
-        '''
 
     class Entity:
         def __init__(self, x, y, width, height, color):
@@ -116,9 +123,9 @@ try:
             self.x = x
             self.y = y
 
-        def refresh(self):
+        def refresh(self,_screen):
             self.pos = (self.x, self.y)
-            self.draw(screen)
+            self.draw(_screen)
 
         def colliderent(self, other):
             return bool(self.x < other.x + other.width and self.x + self.width > other.x and self.y < other.y + other.height and self.y + self.height > other.y)
@@ -127,7 +134,7 @@ try:
             return bool(self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height)
         
         
-    schedule(1.0, func=lambda: play_music("music/Pop.wav"))
+    schedule(10.0, func=lambda: play_music("music/Pop.wav"))
     player = Entity(400, 300, 50, 50, (0, 255, 0))
     helper = Entity(25, 25, 50, 50, (0, 0, 255))
     enemy = Entity(25, 25, 50, 50, (255, 0, 0))
@@ -198,10 +205,10 @@ try:
         if enemy.x < 750:
             enemy.move_facing(0, entity_speed)'''
         screen.fill((255,255,255))
-        player.refresh()
-        enemy.refresh()
-        helper.refresh()
-        public_refresh()
+        player.refresh(screen)
+        enemy.refresh(screen)
+        helper.refresh(screen)
+        public_refresh(screen)
         clock.tick(60)
     pygame.quit()
     sys.exit()
@@ -211,7 +218,7 @@ except Exception as e:
     def exits():
         root.destroy()
 
-    label = tk.Label(root, text="\n    Error"+str(e)+"    "+"\n")
+    label = tk.Label(root, text="\n    Error:"+str(e)+"    "+"\n")
     label.pack()
     button = tk.Button(root, text="Exit", command=exits)
     button.pack()
