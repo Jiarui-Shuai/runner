@@ -42,15 +42,28 @@ try:
 
     def schedule(time:float, func):
         global schedules_list
-        schedules_list.append((time,time, func))
+        schedules_list.append((time,tm(), func))
+
+    schedules_list_always = []
+
+    def schedule_always(time:float, func):
+        global schedules_list_always
+        schedules_list_always.append([time,tm(), func])
+        return None
+
+
 
     def public_refresh():
         global schedules_list
         pygame.display.flip()
         for schedulel in schedules_list:
-            if schedulel[0] <= tm()+schedulel[1]:
+            if schedulel[0] <= tm()-schedulel[1]:
                 schedulel[2]()
                 schedules_list.remove(schedulel)
+        for schedulel in schedules_list_always:
+            if schedulel[0] <= tm()-schedulel[1]:
+                schedulel[2]()
+                schedulel[1] = tm()
 
     def get_size(image: str):
         with Image.open(image) as img:
@@ -133,7 +146,7 @@ try:
         def collidepoint(self, pos):
             return bool(self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height)
         
-        
+    schedule_always(2, func=lambda: print("Hello World!",tm()))   
     schedule(10.0, func=lambda: play_music("music/Pop.wav"))
     player = Entity(400, 300, 50, 50, (0, 255, 0))
     helper = Entity(25, 25, 50, 50, (0, 0, 255))
@@ -208,7 +221,7 @@ try:
         player.refresh(screen)
         enemy.refresh(screen)
         helper.refresh(screen)
-        public_refresh(screen)
+        public_refresh()
         clock.tick(60)
     pygame.quit()
     sys.exit()

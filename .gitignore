@@ -1,2 +1,4 @@
-.vscode/
+# Ignore the node_modules folder
+/.vscode
+# Ignore the temp folder
 temp/
