@@ -1,8 +1,9 @@
 try:
+    # Define env
     import pygame
     import sys
     from math import sin, cos, pi, atan2
-    from time import time as tm
+    from time import time as tm ,sleep
     import os
     from PIL import Image
     print(os.getcwd())
@@ -78,10 +79,10 @@ try:
             self.y = y
             self.pos = (self.x, self.y)
             self.width, self.height = get_size(image)
-            self.image = pygame.image.load(image).convert_alpha()
+            self.imagev = pygame.image.load(image).convert_alpha()
         
         def draw(self, screen):
-            screen.blit(self.image, self.pos)
+            screen.blit(self.imagev, self.pos)
 
         def move (self, dx, dy):
             self.x += dx
@@ -113,7 +114,7 @@ try:
                 return False
 
     class Entity:
-        def __init__(self, x, y, width, height, color):
+        def __init__(self, x : int, y : int, width : int, height: int, color:tuple):
             self.x = x - width/2
             self.y = y - height/2
             self.width = width
@@ -145,12 +146,26 @@ try:
             
         def collidepoint(self, pos):
             return bool(self.x < pos[0] < self.x + self.width and self.y < pos[1] < self.y + self.height)
-        
-    schedule_always(2, func=lambda: print("Hello World!",tm()))   
+    
+    envs = {"tps": 60, "fps": 60, "dt": 1/60}
+    #End of env
+
+    def flip_wall():
+        global walls
+        for wall in walls:
+            wall.refresh(screen)
+
+
+    # Main    
+    schedule_always(5, func=lambda: print("Hello World!",tm()))   
     schedule(10.0, func=lambda: play_music("music/Pop.wav"))
     player = Entity(400, 300, 50, 50, (0, 255, 0))
     helper = Entity(25, 25, 50, 50, (0, 0, 255))
     enemy = Entity(25, 25, 50, 50, (255, 0, 0))
+    walls = [
+        Entity(800,400,50,300,(0,0,0)),
+        Entity(400,200,300,50,(0,0,0)),
+    ]
     enemy_rotate = 0
     entity_speed = 5
     clock = pygame.time.Clock()
@@ -221,8 +236,9 @@ try:
         player.refresh(screen)
         enemy.refresh(screen)
         helper.refresh(screen)
+        flip_wall()
         public_refresh()
-        clock.tick(60)
+        clock.tick(envs["tps"])
     pygame.quit()
     sys.exit()
 except Exception as e:
